@@ -1,0 +1,111 @@
+<!-- 장바구니 테이블 -->
+<table id="cart-table" class="table">
+    <thead>
+        <tr>
+            <th scope="col">상품명</th>
+            <th scope="col">수량</th>
+            <th scope="col">금액</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- 장바구니 상품들의 정보를 동적으로 추가 -->
+    </tbody>
+</table>
+
+<!-- JavaScript 코드 -->
+<script>
+    // 장바구니 데이터
+    let cartItems = [];
+
+    // 장바구니에 상품을 추가하는 함수
+    function addToCart(product, price) {
+        // 동일한 상품이 이미 장바구니에 담겨있는지 확인
+        const existingItem = cartItems.find(item => item.product === product);
+        
+        if (existingItem) {
+            // 이미 장바구니에 담겨있는 상품의 수량 증가
+            existingItem.quantity++;
+        } else {
+            // 장바구니에 새로운 상품 추가
+            cartItems.push({ product, price, quantity: 1 });
+        }
+
+        // 장바구니 테이블 업데이트
+        updateCartTable();
+    }
+
+    // 장바구니 테이블 업데이트 함수
+    function updateCartTable() {
+        const cartTableBody = document.querySelector('#cart-table tbody');
+
+        // 테이블 내용 초기화
+        cartTableBody.innerHTML = '';
+
+        // 장바구니 상품들을 테이블에 추가
+        cartItems.forEach(item => {
+            const { product, price, quantity } = item;
+
+            // 테이블 행 추가
+            const row = document.createElement('tr');
+
+            // 상품명 셀 추가
+            const productCell = document.createElement('td');
+            productCell.textContent = product;
+            row.appendChild(productCell);
+
+            // 수량 셀 추가
+            const quantityCell = document.createElement('td');
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.min = '1';
+            quantityInput.value = quantity;
+            quantityInput.addEventListener('change', (event) => {
+                const newQuantity = parseInt(event.target.value);
+                updateCartItemQuantity(product, newQuantity);
+            });
+            quantityCell.appendChild(quantityInput);
+            row.appendChild(quantityCell);
+
+            // 금액 셀 추가
+            const priceCell = document.createElement('td');
+            priceCell.textContent = formatPrice(price * quantity);
+            row.appendChild(priceCell);
+
+            // 삭제 버튼 셀 추가
+            const deleteCell = document.createElement('td');
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('btn', 'btn-danger');
+            deleteButton.textContent = '삭제';
+            deleteButton.addEventListener('click', () => {
+                removeCartItem(product);
+            });
+            deleteCell.appendChild(deleteButton);
+            row.appendChild(deleteCell);
+
+            // 테이블에 행 추가
+            cartTableBody.appendChild(row);
+        });
+    }
+
+    // 상품 수량 업데이트 함수
+    function updateCartItemQuantity(product, quantity) {
+        const item = cartItems.find(item => item.product === product);
+
+        if (item) {
+            item.quantity = quantity;
+            updateCartTable();
+        }
+    }
+
+    // 장바구니 상품 삭제 함수
+    function removeCartItem(product) {
+        cartItems = cartItems.filter(item => item.product !== product);
+        updateCartTable();
+    }
+
+    // 가격 포맷 함수
+    function formatPrice(price) {
+        return price.toLocaleString('ko-KR') + '원';
+    }
+</script>
