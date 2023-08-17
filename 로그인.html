@@ -23,7 +23,7 @@
     <div class="container">
         <div class="login-container">
             <h2 class="mb-4">로그인</h2>
-            <form>
+            <form id="loginForm">
                 <div class="mb-3">
                     <label for="email" class="form-label">이메일</label>
                     <input type="email" class="form-control" id="email" required>
@@ -36,5 +36,15 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent the form from submitting normally
+            // Here, you can add your login validation logic
+            
+            // Assuming successful login, redirect to index.html
+            window.location.href = "index.html";
+        });
+    </script>
 </body>
 </html>
