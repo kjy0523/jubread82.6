@@ -23,7 +23,7 @@
     <div class="container">
         <div class="signup-container">
             <h2 class="mb-4">회원가입</h2>
-            <form>
+            <form action="로그인.html" method="get">
                 <div class="mb-3">
                     <label for="name" class="form-label">이름</label>
                     <input type="text" class="form-control" id="name" required>
@@ -40,21 +40,7 @@
             </form>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const signupForm = document.getElementById("signup-form");
-    
-            signupForm.addEventListener("submit", function (event) {
-                // 이벤트 기본 동작(폼 제출)을 막음
-                event.preventDefault();
-    
-                // 회원가입 처리 로직 (서버로 전송 등)을 여기에 추가
-    
-                // 로그인 페이지로 이동
-                window.location.href = "로그인.html";
-            });
-        });
-    </script>
-    
 </body>
 </html>
+
+
